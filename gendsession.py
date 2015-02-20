@@ -24,6 +24,7 @@
 # SOFTWARE.
 # 
 
+import sys
 import os
 from dbus.mainloop.glib import DBusGMainLoop
 import dbus
@@ -33,27 +34,6 @@ import signal
 import subprocess
 import logging
 import logging.handlers
-
-#
-# Documentation: 
-# http://dbus.freedesktop.org/doc/dbus-python/doc/tutorial.html
-# http://dbus.freedesktop.org/doc/dbus-python/api/
-# https://people.gnome.org/~mccann/gnome-session/docs/gnome-session.html
-# https://wiki.python.org/moin/DbusExamples
-# http://en.wikibooks.org/wiki/Python_Programming/Dbus
-# https://developer.gnome.org/pygobject/2.26/class-glibmainloop.html
-# http://dbus.freedesktop.org/doc/dbus-monitor.1.html
-# https://launchpad.net/ubuntu/+source/d-feet
-# http://itsjustsosimple.blogspot.se/2014/01/python-signal-handling-and-identifying.html
-#
-
-#
-# debug dbus: dbus-monitor --session --profile
-#
-
-# TODO:
-# add README
-# create subclass and separate wrapper examples
 
 class GEndSessionListenerBase(object):
 
@@ -125,7 +105,7 @@ class GEndSessionListenerBase(object):
         # seems to be a numeric. 
         # also a result from some dbus autostart functionality?
         self.__client_id = self.__session_manager_iface.RegisterClient("", "")
-        #print self.__client_id
+        #self.logger.debug("Gnome Session Manager Client ID = %s" % self.__client_id)
         
         # create the proxy session manager client objects for calling methods
         session_client = session_bus.get_object("org.gnome.SessionManager", 
@@ -139,9 +119,8 @@ class GEndSessionListenerBase(object):
         #    session_client,
         #    dbus.INTROSPECTABLE_IFACE,
         #)
-        #print introspection_iface.Introspect()
-        # the org.gnome.SessionManager.ClientPrivate is not 
-        # displayed for Introspect() calls
+        #self.logger.debug(introspection_iface.Introspect())
+        # NOTE: The org.gnome.SessionManager.ClientPrivate is not displayed for Introspect() calls
        
         session_bus.add_signal_receiver(self.__query_end_session_handler,
         	signal_name = "QueryEndSession",
@@ -190,7 +169,7 @@ class GEndSessionListenerBase(object):
             self.logger.info("Calling DBus method:  EndSessionResponse(True, \"\")")
             self.__session_client_private_iface.EndSessionResponse(True, "")
         else:
-            # TODO: calling EndSessionResponse(False) does not inhibit logout on Ubuntu 14.10...
+            # NOTE: calling EndSessionResponse(False) does not inhibit logout on Ubuntu 14.10...
             self.logger.info("Calling DBus method:  EndSessionResponse(False, \"Not ready\")")
             self.__session_client_private_iface.EndSessionResponse(False, "Not ready")
     
@@ -213,22 +192,12 @@ class GEndSessionListenerBase(object):
     
     def __cancel_end_session_handler(self):
         self.logger.info("Received DBus signal: CancelEndSession")
-        #TODO: ignored for now, i.e. known limitation
+        #NOTE: ignored for now, i.e. known limitation
     
     def __stop_handler(self):
         self.logger.info("Received DBus signal: Stop")
         self.__teardown()
     
-#
-# Sub classing example; implement in separate file
-#
-#class MySubClassExample(GEndSessionListenerBase):
-#    def end_session_actions(self):
-#        print "Performing user specified logout actions"
-#
-#example = MySubClassExample()
-#example.start()
-
 #
 # Gnome End Session Listener 
 #
@@ -246,14 +215,15 @@ class GEndSessionListener(GEndSessionListenerBase):
         else:
             executable = "./%s" % self.end_session_script
 
-        # TODO: returncode is not checked as EndSessionResponse(False) does not appear to abort the logout process 
+        # NOTE: returncode is not checked as EndSessionResponse(False) does not appear to abort the logout process 
         subprocess.call(executable)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print "Usage: %s end-session-script" % sys.argv[0]
         print
-        print "          end-session-script refers to the path to the executable script to be run when the Gnome Session ends."
+        print "          end-session-script refers to the path to the executable script "
+        print "          to be run when the Gnome Session ends."
         print 
         exit(1)        
         
