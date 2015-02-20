@@ -34,6 +34,7 @@ import signal
 import subprocess
 import logging
 import logging.handlers
+import inspect
 
 class GEndSessionListenerBase(object):
 
@@ -76,7 +77,7 @@ class GEndSessionListenerBase(object):
 
         # create the logger object
         #FORMAT = self.__class__.__name__ + ": %(message)s"
-        FORMAT = "%(filename)s: %(message)s"
+        FORMAT = os.path.basename(inspect.getfile(self.__class__)) + ": %(message)s"
         self.logger = logging.getLogger()
         formatter = logging.Formatter(FORMAT)
         handler = logging.handlers.SysLogHandler(address = "/dev/log")
