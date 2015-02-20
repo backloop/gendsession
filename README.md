@@ -9,18 +9,24 @@ Triggering a script for execution at logout on Gnome based systems is on the con
 ##Example Use-Case
 Automatically unmounting of encrypted filesystems when a user logs out.
 
+##Usage
+`$ ./gendsession.py <path-to-logout-actions-script>`
+
 ##Typical Usage: Run both login and logout actions
-1. Create a script that performs the login actions, `login-actions.sh`
-2. Create a script that performs the logout actions, `logout-actions.sh`
+1. Create a script that performs the login actions, e.g. `login-actions.sh`
+2. Create a script that performs the logout actions, e.g. `logout-actions.sh`
 3. Create a wrapper script that is added to the *Startup Applications* dialog
 ```
 #!/bin/sh
 
+# Assume that all scripts are located in the same directory as this script
+path=$(dirname $(readlink -f $0))
+
 # These actions will be executed during login
-./login-actions.sh
+$path/login-actions.sh
 
 # This starts a listener for logout signalling and executes the actions during logout
-./gendsession.py logout-actions.sh
+$path/gendsession.py $path/logout-actions.sh
 ```
 
 ##Other Usage:
