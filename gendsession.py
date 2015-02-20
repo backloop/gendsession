@@ -47,7 +47,7 @@ class GEndSessionListenerBase(object):
         raise NotImplementedError()
     
     # start() is a blocking method and returns only
-    # during louput or if interrupted by a Unix signal
+    # during logout or if interrupted by a Unix signal
     def start(self):
 	# signals can only be received while the event loop is running
         self.__loop = gobject.MainLoop()
