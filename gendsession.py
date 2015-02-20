@@ -45,23 +45,25 @@ class GEndSessionListenerBase(object):
         # The application will be given a maxium of ten seconds to perform 
         # any actions required for a clean shutdown."
         raise NotImplementedError()
-
+    
+    # start() is a blocking method and returns only
+    # during louput or if interrupted by a Unix signal
     def start(self):
 	# signals can only be received while the event loop is running
         self.__loop = gobject.MainLoop()
         self.__loop.run()
         
-        # run actions when interrupted by a Linux shell signal
+        # run actions when interrupted by a Unix signal
         if self.interrupted:
             self.end_session_actions()
    
         self.logger.info("Terminated")
  
     def __init__(self):
-        # will be set to True if a Linux shell signal is caught and handled
+        # will be set to True if a Unix signal is caught and handled
         self.interrupted = False
 	
-        # handle Linux shell signals
+        # handle Unix signals
         #  (SIGKILL and SIGSTOP cannot be caught, blocked, or ignored)
         signal.signal(signal.SIGHUP, self.__signal_handler)
         signal.signal(signal.SIGINT, self.__signal_handler) # ctrl-c
@@ -153,7 +155,7 @@ class GEndSessionListenerBase(object):
         self.logger.info("Terminated DBus connections")
     
     #
-    # Handle Linux shell signals
+    # Handle Unix signals
     #
     def __signal_handler(self, signum, stack):
         self.logger.info("Received shell signal: %s" % signum)
