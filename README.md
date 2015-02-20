@@ -29,7 +29,7 @@ $path/login-actions.sh
 $path/gendsession.py $path/logout-actions.sh
 ```
 
-##Other Usage:
+##Other Usage: Subclassing
 It is also possible to subclass the functionality from within Python scripts if this is desired
 ```
 #!/usr/bin/python
