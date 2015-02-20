@@ -37,6 +37,8 @@ import logging.handlers
 
 class GEndSessionListenerBase(object):
 
+    # override this method when subclassing
+    # this method contains the actions performed during logout/"Gnome EndSession"
     def end_session_actions(self):
         # According to Gnome Session Manager docs:
         # "The client must not attempt to interact with the user [...]. 
