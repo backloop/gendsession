@@ -1,5 +1,5 @@
 # gendsession
-Automatically trigger execution of a script during user logout on Gnome based systems.
+Automatically trigger execution of a script during user logout on Gnome based systems using Gnome Session Manager's EndSession DBus interface.
 
 ##Description
 Triggering a script for execution at login on Gnome based systems is a trivial task, just add the script in the *Startup Applications* dialog and everthing is taken automatically care of.
