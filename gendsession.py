@@ -76,7 +76,6 @@ class GEndSessionListenerBase(object):
         # the remaining signals are considered fatal and are left unhandled
 
         # create the logger object
-        #FORMAT = self.__class__.__name__ + ": %(message)s"
         FORMAT = os.path.basename(inspect.getfile(self.__class__)) + ": %(message)s"
         self.logger = logging.getLogger()
         formatter = logging.Formatter(FORMAT)
@@ -84,8 +83,7 @@ class GEndSessionListenerBase(object):
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
         self.logger.setLevel(logging.DEBUG)
-        #self.logger.setLevel(logging.WARNING)
-
+        
         # must be setup to receive signals
         DBusGMainLoop(set_as_default=True)
         
@@ -102,13 +100,6 @@ class GEndSessionListenerBase(object):
         #session_manager_iface.Logout(0)
         
         # registers a client with the session manager
-        # app_id:   
-        # seems to be an id ending with *.desktop. 
-        # a result from some dbus autostart functionality?
-        # 
-        # client_startup_id:
-        # seems to be a numeric. 
-        # also a result from some dbus autostart functionality?
         self.__client_id = self.__session_manager_iface.RegisterClient("", "")
         #self.logger.debug("Gnome Session Manager Client ID = %s" % self.__client_id)
         

@@ -1,5 +1,5 @@
 # gendsession
-Automatically trigger execution of a script during user logout on Gnome based systems.
+Automatically trigger execution of a script during user logout on Gnome based systems using Gnome Session Manager's EndSession DBus interface.
 
 ##Description
 Triggering a script for execution at login on Gnome based systems is a trivial task, just add the script in the *Startup Applications* dialog and everthing is taken automatically care of.
@@ -7,7 +7,7 @@ Triggering a script for execution at login on Gnome based systems is a trivial t
 Triggering a script for execution at logout on Gnome based systems is on the contrary not at all trivial. This script aims to remedy that by taking care of the messy details of the Gnome Session Manager's EndSession DBus signalling.
 
 ##Example Use-Case
-Automatically unmounting of encrypted filesystems when a user logs out.
+Automatically unmounting of user-specific encrypted filesystems when the user logs out. This applies to other mounts than /home/$USER as there are already existing tools for auto-mounting private home directories in most distros.
 
 ##Usage
 `$ ./gendsession.py <path-to-logout-actions-script> [logout-actions-script-args]`
@@ -43,6 +43,10 @@ class MySubClassExample(gendsession.GEndSessionListenerBase):
 example = MySubClassExample()
 example.start()
 ```
+
+##SUpported Platforms
+All Gnome based systems should be supported. Verified on:
+* Ubuntu 14.10
 
 ##Background
 To trigger a script for execution during a logout on Gnome based systems one can register for the Gnome Session Manager's DBus EndSession signals. The main problem is that the Gnome Session Manager DBus interface is largely under-documented and therefore not trivial to understand how to use.
