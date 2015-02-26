@@ -10,7 +10,7 @@ Triggering a script for execution at logout on Gnome based systems is on the con
 Automatically unmounting of encrypted filesystems when a user logs out.
 
 ##Usage
-`$ ./gendsession.py <path-to-logout-actions-script>`
+`$ ./gendsession.py <path-to-logout-actions-script> [logout-actions-script-args]`
 
 ##Typical Usage: Run both login and logout actions
 1. Create a script that performs the login actions, e.g. `login-actions.sh`

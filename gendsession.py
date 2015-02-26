@@ -208,35 +208,36 @@ class GEndSessionListenerBase(object):
 #
 class GEndSessionListener(GEndSessionListenerBase):
     
-    def __init__(self, end_session_script):
-        self.end_session_script = end_session_script
+    def __init__(self, cmdline):
+        self.cmdline = cmdline
         super(GEndSessionListener, self).__init__()
 
     def end_session_actions(self):
-        self.logger.debug("Performing user specified logout actions (%s)" % self.end_session_script)
-        
-        if os.path.isabs(self.end_session_script):
-            executable = self.end_session_script
-        else:
-            executable = "./%s" % self.end_session_script
+        self.logger.debug("Performing user specified logout actions (%s)" % self.cmdline)
 
-        # NOTE: returncode is not checked as EndSessionResponse(False) does not appear to abort the logout process 
-        subprocess.call(executable)
+	cmd = self.cmdline[0]
+        if not os.path.isabs(cmd):
+            self.cmdline.pop(0)
+            self.cmdline.insert(0, "./%s" % cmd)
+
+        # NOTE: returncode is not checked as EndSessionResponse(False) does not
+        # appear to abort the logout process.
+        subprocess.call(self.cmdline)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print "Usage: %s end-session-script" % sys.argv[0]
+    if len(sys.argv) < 2:
+        print "Usage: %s <end-session-script> [end-session-script-args]" % sys.argv[0]
         print
         print "          end-session-script refers to the path to the executable script "
         print "          to be run when the Gnome Session ends."
         print 
         exit(1)        
         
-    end_session_script = sys.argv[1]
+    cmdline = sys.argv[1:]
     #if not (os.path.isfile(end_session_script) and os.access(end_session_script, os.X_OK)):
-    if not (os.access(end_session_script, os.F_OK) and os.access(end_session_script, os.X_OK)):
-        print "ERROR: The end-session-script argument does not exist or is not an executable. Abort."
+    if not (os.access(cmdline[0], os.F_OK) and os.access(cmdline[0], os.X_OK)):
+        print "The file '%s'  does not exist or is not an executable. Abort." % cmdline[0]
         exit(1)
 
-    listener = GEndSessionListener(end_session_script)
+    listener = GEndSessionListener(cmdline)
     listener.start()
