@@ -44,7 +44,7 @@ example = MySubClassExample()
 example.start()
 ```
 
-##SUpported Platforms
+##Supported Platforms
 All Gnome based systems should be supported. Verified on:
 * Ubuntu 14.10
 
