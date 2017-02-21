@@ -9,14 +9,14 @@
 
 import sys
 import os
-import dbus
-import gobject
-from dbus.mainloop.glib import DBusGMainLoop
 import signal
 import subprocess
 import logging
 import logging.handlers
 import inspect
+import gobject
+import dbus
+from dbus.mainloop.glib import DBusGMainLoop
 
 class GEndSessionListenerBase(object):
 
