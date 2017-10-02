@@ -12,7 +12,7 @@ Automatically unmounting of user-specific encrypted filesystems when the user lo
 ## Usage
 `$ ./gendsession.py <path-to-logout-actions-script> [logout-actions-script-args]`
 
-##T ypical Usage: Run both login and logout actions
+## Typical Usage: Run both login and logout actions
 1. Create a script that performs the login actions, e.g. `login-actions.sh`
 2. Create a script that performs the logout actions, e.g. `logout-actions.sh`
 3. Create a wrapper script that is added to the *Startup Applications* dialog
@@ -46,7 +46,7 @@ example.start()
 
 ## Supported Platforms
 All Gnome based systems should be supported. Verified on:
-* Ubuntu 14.10
+* Ubuntu 14.10 through to 17.04 
 
 ## Background
 To trigger a script for execution during a logout on Gnome based systems one can register for the Gnome Session Manager's DBus EndSession signals. The main problem is that the Gnome Session Manager DBus interface is largely under-documented and therefore not trivial to understand how to use.
