@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 #
-# Copyright (c) 2015 Pablo Cases,
+# Copyright (c) 2015-2020 Pablo Cases,
 # Distributed under the MIT License.
 # (See accompanying file LICENSE file or
 # copy at http://opensource.org/licenses/MIT)
@@ -9,14 +9,15 @@
 
 import sys
 import os
+from dbus.mainloop.glib import DBusGMainLoop
+import dbus
+from gi.repository import GLib
+import datetime
 import signal
 import subprocess
 import logging
 import logging.handlers
 import inspect
-import gobject
-import dbus
-from dbus.mainloop.glib import DBusGMainLoop
 
 class GEndSessionListenerBase(object):
 
@@ -33,7 +34,7 @@ class GEndSessionListenerBase(object):
     # during logout or if interrupted by a Unix signal
     def start(self):
 	# signals can only be received while the event loop is running
-        self.__loop = gobject.MainLoop()
+        self.__loop = GLib.MainLoop()
         self.__loop.run()
 
         # run actions when interrupted by a Unix signal
@@ -199,17 +200,17 @@ class GEndSessionListener(GEndSessionListenerBase):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print "Usage: %s <end-session-script> [end-session-script-args]" % sys.argv[0]
-        print
-        print "          end-session-script refers to the path to the executable script "
-        print "          to be run when the Gnome Session ends."
-        print
+        print("Usage: %s <end-session-script> [end-session-script-args]" % sys.argv[0])
+        print()
+        print("          end-session-script refers to the path to the executable script ")
+        print("          to be run when the Gnome Session ends.")
+        print()
         exit(1)
 
     cmdline = sys.argv[1:]
     #if not (os.path.isfile(end_session_script) and os.access(end_session_script, os.X_OK)):
     if not (os.access(cmdline[0], os.F_OK) and os.access(cmdline[0], os.X_OK)):
-        print "The file '%s'  does not exist or is not an executable. Abort." % cmdline[0]
+        print("The file '%s'  does not exist or is not an executable. Abort." % cmdline[0])
         exit(1)
 
     listener = GEndSessionListener(cmdline)
