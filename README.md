@@ -1,18 +1,18 @@
 # gendsession
 Automatically trigger execution of a script during user logout on Gnome based systems using Gnome Session Manager's EndSession DBus interface.
 
-##Description
+## Description
 Triggering a script for execution at login on Gnome based systems is a trivial task, just add the script in the *Startup Applications* dialog and everthing is taken automatically care of.
 
 Triggering a script for execution at logout on Gnome based systems is on the contrary not at all trivial. This script aims to remedy that by taking care of the messy details of the Gnome Session Manager's EndSession DBus signalling.
 
-##Example Use-Case
+## Example Use-Case
 Automatically unmounting of user-specific encrypted filesystems when the user logs out. This applies to other mounts than /home/$USER as there are already existing tools for auto-mounting private home directories in most distros.
 
-##Usage
+## Usage
 `$ ./gendsession.py <path-to-logout-actions-script> [logout-actions-script-args]`
 
-##Typical Usage: Run both login and logout actions
+## Typical Usage: Run both login and logout actions
 1. Create a script that performs the login actions, e.g. `login-actions.sh`
 2. Create a script that performs the logout actions, e.g. `logout-actions.sh`
 3. Create a wrapper script that is added to the *Startup Applications* dialog
@@ -29,7 +29,7 @@ $path/login-actions.sh
 $path/gendsession.py $path/logout-actions.sh
 ```
 
-##Other Usage: Subclassing
+## Other Usage: Subclassing
 It is also possible to subclass the functionality from within Python scripts if this is desired
 ```
 #!/usr/bin/python
@@ -44,14 +44,14 @@ example = MySubClassExample()
 example.start()
 ```
 
-##Supported Platforms
+## Supported Platforms
 All Gnome based systems should be supported. Verified on:
-* Ubuntu 14.10
+* Ubuntu 14.10 through to 17.04 
 
-##Background
+## Background
 To trigger a script for execution during a logout on Gnome based systems one can register for the Gnome Session Manager's DBus EndSession signals. The main problem is that the Gnome Session Manager DBus interface is largely under-documented and therefore not trivial to understand how to use.
 
-##References
+## References
 * [Gnome Session Manager DBus interface documentation](https://people.gnome.org/~mccann/gnome-session/docs/gnome-session.html)
 * [DBus Python tutorial](http://dbus.freedesktop.org/doc/dbus-python/doc/tutorial.html)
 * [DBus Python API](http://dbus.freedesktop.org/doc/dbus-python/api/)
