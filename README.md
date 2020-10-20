@@ -47,7 +47,7 @@ example.start()
 ## Supported Platforms
 All Gnome based systems should be supported. Verified on:
 * v1.0: Ubuntu 14.10 through to 17.04
-* v1.1: Ubuntu 19.10
+* v1.1: Ubuntu 19.10 through to 20.04
 
 ## Background
 To trigger a script for execution during a logout on Gnome based systems one can register for the Gnome Session Manager's DBus EndSession signals. The main problem is that the Gnome Session Manager DBus interface is largely under-documented and therefore not trivial to understand how to use.
